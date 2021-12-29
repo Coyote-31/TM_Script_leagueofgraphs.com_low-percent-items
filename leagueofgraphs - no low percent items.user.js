@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         leagueofgraphs - no low percent items
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.2
+// @version      1.3
 // @description  No more items with low % use.
 // @author       Coyote
 // @license MIT
 // @match        https://www.leagueofgraphs.com/*/champions/items/*
 // @icon         https://lolg-cdn.porofessor.gg/img/s/favicon_v2.png
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
-// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require      https://greasyfork.org/scripts/5392-waitforkeyelements/code/WaitForKeyElements.js?version=115012
 // @grant        GM_addStyle
 // ==/UserScript==
 /* globals jQuery, $, waitForKeyElements */
