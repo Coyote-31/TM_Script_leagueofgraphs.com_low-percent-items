@@ -4,6 +4,7 @@
 // @version      1.2
 // @description  No more items with low % use.
 // @author       Coyote
+// @license MIT
 // @match        https://www.leagueofgraphs.com/*/champions/items/*
 // @icon         https://lolg-cdn.porofessor.gg/img/s/favicon_v2.png
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
