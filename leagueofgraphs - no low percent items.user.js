@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - no low percent items
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.5.0
+// @version      1.5.1
 // @description  No more items with low % use.
 // @author       Coyote
 // @license MIT
@@ -24,10 +24,9 @@ let scriptCount = 0;
 // Toggler
 let displayLowPercent = false;
 
-waitForKeyElements(".data_table", gmMain);
+waitForKeyElements(".data_table", main, false);
 
-function gmMain () {
-
+function main () {
     scriptCount++;
     console.log("Script Coyote Loaded #" + scriptCount);
 
@@ -37,6 +36,14 @@ function gmMain () {
     for (let seeMoreBtn of seeMoreBtns) {
         seeMoreBtn.addEventListener('click', lowPercentEraser);
     }
+
+    $.each($(".sortable_column"), function (i, obj) {
+        obj.addEventListener('click', lowPercentEraser);
+    })
+
+    $.each($("#onlyMythicItemsSelectorCheckbox"), function (i, obj) {
+        obj.addEventListener('change', lowPercentEraser);
+    })
 
     // Create toggle btn to diplay/hide low % items
     let divContainer = $(".overflow-container").first();
