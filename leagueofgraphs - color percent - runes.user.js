@@ -9,6 +9,7 @@
 // @icon         https://lolg-cdn.porofessor.gg/img/s/favicon_v2.png
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL    https://github.com/Coyote-31/User-Scripts_leagueofgraphs.com/blob/master/leagueofgraphs%20-%20color%20percent%20-%20runes.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 /* globals jQuery, $, waitForKeyElements */
