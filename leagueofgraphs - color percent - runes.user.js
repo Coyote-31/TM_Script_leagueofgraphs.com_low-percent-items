@@ -21,20 +21,18 @@ const lowPopLimit = 20.0;
 const lowPopColor = "coral"; // coral
 
 const mediumPopLimit = 50.0;
-const mediumPopColor = "lightseagreen"; // lightseagreen ; dodgerblue
+const mediumPopColor = "lightseagreen"; // lightseagreen - dodgerblue
 
-// const highPopLimit = 100.0;
-const highPopColor = "lightgreen"; // greenyellow ; lawngreen ; lightgreen
+const highPopColor = "lightgreen"; // greenyellow - lawngreen - lightgreen
 
 // Victory :
 const lowVicLimit = 48.0;
 const lowVicColor = "coral"; // coral
 
 const mediumVicLimit = 50.0;
-const mediumVicColor = "lightseagreen"; // lightseagreen ; dodgerblue
+const mediumVicColor = "lightseagreen"; // lightseagreen - dodgerblue
 
-// const highVicLimit = 100.0;
-const highVicColor = "lightgreen"; // greenyellow ; lawngreen ; lightgreen
+const highVicColor = "lightgreen"; // greenyellow - lawngreen - lightgreen
 
 // Count script loads
 let scriptCount = 0;
