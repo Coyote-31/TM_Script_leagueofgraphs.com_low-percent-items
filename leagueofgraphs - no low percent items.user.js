@@ -121,7 +121,6 @@ function rowsDisplay(rows) {
             let percent = progressBarTxts[0].innerHTML.replace('%', '');
 
             if (percent < minPercent) {
-                progressBarTxts[0].innerHTML = progressBarTxts[0].innerHTML;
                 row.hidden = false;
             }
         }
