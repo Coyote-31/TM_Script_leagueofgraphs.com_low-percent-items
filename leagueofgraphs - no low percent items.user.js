@@ -24,7 +24,7 @@ let scriptCount = 0;
 // Toggler
 let displayLowPercent = false;
 
-waitForKeyElements(".data_table", main, false);
+waitForKeyElements("#topItemsTable", main, false);
 
 function main () {
     scriptCount++;
