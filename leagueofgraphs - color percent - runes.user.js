@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      0.1
+// @version      0.1.1
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT

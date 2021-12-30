@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - no low percent items
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.4
+// @version      1.5.0
 // @description  No more items with low % use.
 // @author       Coyote
 // @license MIT
