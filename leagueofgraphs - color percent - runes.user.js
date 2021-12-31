@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.0.0
+// @version      1.1.0
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT
@@ -18,7 +18,7 @@
 //// config (% and color) ////
 
 // Popularity :
-const lowPopLimit = 20.0;
+const lowPopLimit = 10.0;
 const lowPopColor = "coral"; // coral
 
 const mediumPopLimit = 50.0;
@@ -109,19 +109,16 @@ function colorPopup (runeImgs) {
         if (numbers != null) {
     
             // Popularity
-            let popNumPercent = numbers[0].replace("<highlight>", "").replace("</highlight>", "")
+            let popNumPercent = numbers[0].replace("<highlight>", "").replace("</highlight>", "");
             let popNum = popNumPercent.replace("%", '');
 
             if (0.0 <= popNum && popNum < lowPopLimit) {
-                // numbers[0] = numbers[0].replace("<highlight>", "<highlight><strong>").replace("</highlight>", "</strong></highlight>");
                 runeImg.setAttribute("tooltip", tooltip.replace(popNumPercent, "<span style=\"color:" + lowPopColor + " !important;\">" + popNumPercent + "</span>"));
     
             } else if (lowPopLimit <= popNum && popNum < mediumPopLimit) {
-                // numbers[0] = numbers[0].replace("<highlight>", "<highlight><div>").replace("</highlight>", "</div></highlight>");
                 runeImg.setAttribute("tooltip", tooltip.replace(popNumPercent, "<span style=\"color:" + mediumPopColor + " !important;\">" + popNumPercent + "</span>"));
                 
             } else if (mediumPopLimit <= popNum && popNum < 100.0) {
-                // numbers[0] = numbers[0].replace("<highlight>", "<highlight><a>").replace("</highlight>", "</a></highlight>");
                 runeImg.setAttribute("tooltip", tooltip.replace(popNumPercent, "<span style=\"color:" + highPopColor + " !important;\">" + popNumPercent + "</span>"));
             }
     
@@ -145,10 +142,12 @@ function colorPopup (runeImgs) {
                     tooltipParts[0] = tooltipParts[0] + vicNumPercent;
                     tooltipParts[1] = tooltipParts[1] + vicNumPercentReplaced;
                     tooltip = tooltipParts.join("");
-                    runeImg.setAttribute("tooltip", tooltip);
+                    runeImg.setAttribute("tooltip", tooltip);   
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
+                runeImg.style.outline = "1px solid " + lowVicColor;
+                runeImg.style.borderRadius = "1rem";
     
             } else if (lowVicLimit <= vicNum && vicNum < mediumVicLimit) {
 
@@ -163,6 +162,8 @@ function colorPopup (runeImgs) {
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
+                runeImg.style.outline = "1px solid " + mediumVicColor;
+                runeImg.style.borderRadius = "1rem";
                 
             } else if (mediumVicLimit <= vicNum && vicNum < 100.0) {
 
@@ -177,6 +178,8 @@ function colorPopup (runeImgs) {
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
+                runeImg.style.outline = "1px solid " + highVicColor;
+                runeImg.style.borderRadius = "1rem";
             }
         }
 
