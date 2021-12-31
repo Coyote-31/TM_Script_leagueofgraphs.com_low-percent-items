@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.1.0
+// @version      1.1.1
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT
@@ -41,6 +41,25 @@ let scriptCount = 0;
 // Toggler
 let displayLowPercent = false;
 
+// Runes perks class to style
+let classStyle3MainRunes = [ 
+    ".perk-8439-36",    // Aftershock
+    ".perk-8360-36",    // Unsealed Spellbook
+    ".perk-8229-36",    // Arcane Comet
+];   
+
+let classStyle4MainRunes = [
+    ".perk-8005-36",    // Press the Attack
+    ".perk-8008-36",    // Lethal Tempo
+    ".perk-8021-36",    // Fleet Footwork
+    ".perk-8010-36",    // Conqueror
+
+    ".perk-8112-36",    // Electrocute
+    ".perk-8124-36",    // Predator
+    ".perk-8128-36",    // Dark Harvest
+    ".perk-9923-36"     // Hail of Blades
+];
+
 waitForKeyElements("#runesColumn", main);
 
 function main () {
@@ -58,6 +77,10 @@ function main () {
     // Runes tooltips in img
     let runeImgs = $("table.perksTable td > img");
     colorPopup(runeImgs);
+
+    // Rune Css style
+    style3MainRunes();
+    style4MainRunes();
 
 }
 
@@ -147,7 +170,7 @@ function colorPopup (runeImgs) {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
                 runeImg.style.outline = "1px solid " + lowVicColor;
-                runeImg.style.borderRadius = "1rem";
+                runeImg.style.borderRadius = "3rem";
     
             } else if (lowVicLimit <= vicNum && vicNum < mediumVicLimit) {
 
@@ -163,7 +186,7 @@ function colorPopup (runeImgs) {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
                 runeImg.style.outline = "1px solid " + mediumVicColor;
-                runeImg.style.borderRadius = "1rem";
+                runeImg.style.borderRadius = "3rem";
                 
             } else if (mediumVicLimit <= vicNum && vicNum < 100.0) {
 
@@ -179,9 +202,27 @@ function colorPopup (runeImgs) {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
                 runeImg.style.outline = "1px solid " + highVicColor;
-                runeImg.style.borderRadius = "1rem";
+                runeImg.style.borderRadius = "3rem";
             }
         }
 
+    });
+}
+
+function style3MainRunes() {
+
+    $.each(classStyle3MainRunes, function(i, /** @type {String} */ classStyle3MainRune) {
+        $(classStyle3MainRune)
+            .css("margin-left", "0.4rem")
+            .css("margin-right", "0.4rem");
+    });
+}
+
+function style4MainRunes() {
+
+    $.each(classStyle4MainRunes, function(i, /** @type {String} */ classStyle4MainRune) {
+        $(classStyle4MainRune)
+            .css("margin-left", "0.15rem")
+            .css("margin-right", "0.15rem");
     });
 }
