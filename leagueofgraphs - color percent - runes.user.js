@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.2.0
+// @version      1.3.0
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT
@@ -85,6 +85,8 @@ function main () {
     style3MainRunes();
     style4MainRunes();
 
+    // Order
+    addSortBtns();
 }
 
 function colorPop (percents) {
@@ -251,4 +253,59 @@ function style4MainRunes() {
             .css("padding-left", "0.15rem")
             .css("padding-right", "0.15rem");
     });
+}
+
+function addSortBtns() {
+
+    // Delete ads
+    $(".ads").remove();
+
+    // Add btns //
+
+    let tables = $(".perksTableContainerTable");
+
+    tables.each(function() {
+
+        let th = $(this).find("tr th");
+        let margin = "margin";
+        let marginValue=  "0px";
+        let padding = "padding";
+        let paddingValue = "0px";
+        let background = "background";
+        let backgroundValue= "none";
+
+        $(th.get(1)).wrapInner("<button></button>").children("button").first()
+            .on("click", sortPerksByPopularity)
+                .css(margin, marginValue)
+                .css(padding, paddingValue)
+                .css(background, backgroundValue);
+
+        $(th.get(2)).wrapInner("<button></button>").children("button").first()
+            .on("click", sortPerksByVictory)
+                .css(margin, marginValue)
+                .css(padding, paddingValue)
+                .css(background, backgroundValue);
+    });
+}
+
+function sortPerksByPopularity() {
+
+    // Sort perks
+    let perksArray = $(".perksTableContainer").toArray().sort(function(a,b) {
+        let aPercent = $(a).find("td.globalPopularityCell .progressBarTxt").html().replace('%', '');
+        let bPercent = $(b).find("td.globalPopularityCell .progressBarTxt").html().replace('%', '');
+        return bPercent - aPercent;
+    })
+    $(perksArray).appendTo($(".perksTableContainer").parent());
+}
+
+function sortPerksByVictory() {
+
+    // Sort perks
+    let perksArray = $(".perksTableContainer").toArray().sort(function(a,b) {
+        let aPercent = $(a).find("td.globalWinrateCell .progressBarTxt").html().replace('%', '');
+        let bPercent = $(b).find("td.globalWinrateCell .progressBarTxt").html().replace('%', '');
+        return bPercent - aPercent;
+    })
+    $(perksArray).appendTo($(".perksTableContainer").parent());
 }
