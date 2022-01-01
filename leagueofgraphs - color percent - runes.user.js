@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.3.0
+// @version      1.3.1
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT
@@ -199,7 +199,7 @@ function colorPopup (runeImgs) {
                 runeImg.style.outline = "2px solid " + mediumVicColor;
                 runeImg.style.borderRadius = "3rem";
                 
-            } else if (mediumVicLimit <= vicNum && vicNum < 100.0) {
+            } else if (mediumVicLimit <= vicNum && vicNum <= 100.0) {
 
                 vicNumPercentReplaced = "<span style=\"color:" + highVicColor + " !important;\">" + vicNumPercent + "</span>";
 
