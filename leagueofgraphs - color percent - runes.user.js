@@ -81,6 +81,7 @@ function main () {
 
     // Rune Css style
     centerRunes();
+    alignRunesTable();
     style3MainRunes();
     style4MainRunes();
 
@@ -218,6 +219,7 @@ function colorPopup (runeImgs) {
 }
 
 function centerRunes() {
+
     $("tbody > tr > td[colspan]").removeAttr("colspan").removeClass("text-center")
         .parent("tr")
             .css("display", "flex")
@@ -226,6 +228,11 @@ function centerRunes() {
     $("table.data_table.perksTable td")
         .css("padding-left", "0.3rem")
         .css("padding-right", "0.3rem");
+}
+
+function alignRunesTable() {
+
+    $(".data_table.perksTable").parents("td").css("width", "60%");
 }
 
 function style3MainRunes() {
