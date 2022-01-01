@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         leagueofgraphs - color percent - runes
 // @namespace    https://www.leagueofgraphs.com/
-// @version      1.1.1
+// @version      1.1.2
 // @description  Color percentage on runes page.
 // @author       Coyote
 // @license MIT
@@ -20,19 +20,19 @@
 
 // Popularity :
 const lowPopLimit = 10.0;
-const lowPopColor = "coral"; // coral
+const lowPopColor = "#f54c43"; // coral - orangered
 
 const mediumPopLimit = 50.0;
-const mediumPopColor = "gold"; // gold
+const mediumPopColor = "#dfa33e"; // gold
 
 const highPopColor = "#2AA3CC"; // lightseagreen
 
 // Victory :
 const lowVicLimit = 48.0;
-const lowVicColor = "coral"; // coral
+const lowVicColor = "#f54c43"; // coral - orangered
 
 const mediumVicLimit = 50.0;
-const mediumVicColor = "gold"; // gold
+const mediumVicColor = "#dfa33e"; // gold - goldenrod
 
 const highVicColor = "#2DEB90"; // greenyellow - lawngreen - lightgreen
 
@@ -76,46 +76,53 @@ function main () {
     colorVic(percentsVicGlobal);
 
     // Runes tooltips in img
-    let runeImgs = $("table.perksTable td > img");
+    let runeImgs = $("table.perksTable td img");
     colorPopup(runeImgs);
 
     // Rune Css style
+    centerRunes();
     style3MainRunes();
     style4MainRunes();
 
 }
 
 function colorPop (percents) {
-    $.each(percents, function(i, percent) {
+    $.each(percents, function(i, /** @type {HTMLElement} */ percent) {
 
         let number = percent.innerHTML.replace('%', '');
 
         if (0.0 <= number && number < lowPopLimit) {
             percent.style.color = lowPopColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", lowPopColor);
 
         } else if (lowPopLimit <= number && number < mediumPopLimit) {
             percent.style.color = mediumPopColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", mediumPopColor);
             
         } else if (mediumPopLimit <= number && number < 100.0) {
             percent.style.color = highPopColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", highPopColor);
         }
     });
 }
 
 function colorVic (percents) {
     
-    $.each(percents, function(i, percent) {
+    $.each(percents, function(i, /** @type {HTMLElement} */ percent) {
 
         let number = percent.innerHTML.replace('%', '');
 
         if (0.0 <= number && number < lowVicLimit) {
             percent.style.color = lowVicColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", lowVicColor);
 
         } else if (lowVicLimit <= number && number < mediumVicLimit) {
             percent.style.color = mediumVicColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", mediumVicColor);
             
         } else if (mediumVicLimit <= number && number < 100.0) {
             percent.style.color = highVicColor;
+            $(percent).first().parent().find(".full-progress-bar").css("background-color", highVicColor);
         }
     });
 }
@@ -170,7 +177,7 @@ function colorPopup (runeImgs) {
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
-                runeImg.style.outline = "1px solid " + lowVicColor;
+                runeImg.style.outline = "2px solid " + lowVicColor;
                 runeImg.style.borderRadius = "3rem";
     
             } else if (lowVicLimit <= vicNum && vicNum < mediumVicLimit) {
@@ -186,7 +193,7 @@ function colorPopup (runeImgs) {
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
-                runeImg.style.outline = "1px solid " + mediumVicColor;
+                runeImg.style.outline = "2px solid " + mediumVicColor;
                 runeImg.style.borderRadius = "3rem";
                 
             } else if (mediumVicLimit <= vicNum && vicNum < 100.0) {
@@ -202,7 +209,7 @@ function colorPopup (runeImgs) {
                 } else {
                     runeImg.setAttribute("tooltip", tooltip.replace(vicNumPercent, vicNumPercentReplaced));
                 }
-                runeImg.style.outline = "1px solid " + highVicColor;
+                runeImg.style.outline = "2px solid " + highVicColor;
                 runeImg.style.borderRadius = "3rem";
             }
         }
@@ -210,12 +217,23 @@ function colorPopup (runeImgs) {
     });
 }
 
+function centerRunes() {
+    $("tbody > tr > td[colspan]").removeAttr("colspan").removeClass("text-center")
+        .parent("tr")
+            .css("display", "flex")
+            .css("flex-wrap", "nowrap")
+            .css("justify-content", "center");
+    $("table.data_table.perksTable td")
+        .css("padding-left", "0.3rem")
+        .css("padding-right", "0.3rem");
+}
+
 function style3MainRunes() {
 
     $.each(classStyle3MainRunes, function(i, /** @type {String} */ classStyle3MainRune) {
         $(classStyle3MainRune)
-            .css("margin-left", "0.4rem")
-            .css("margin-right", "0.4rem");
+            .css("padding-left", "0.3rem")
+            .css("padding-right", "0.3rem");
     });
 }
 
@@ -223,7 +241,7 @@ function style4MainRunes() {
 
     $.each(classStyle4MainRunes, function(i, /** @type {String} */ classStyle4MainRune) {
         $(classStyle4MainRune)
-            .css("margin-left", "0.15rem")
-            .css("margin-right", "0.15rem");
+            .css("padding-left", "0.15rem")
+            .css("padding-right", "0.15rem");
     });
 }
