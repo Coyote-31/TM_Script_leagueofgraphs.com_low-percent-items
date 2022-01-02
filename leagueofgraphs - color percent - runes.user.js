@@ -10,10 +10,11 @@
 // @icon         https://lolg-cdn.porofessor.gg/img/s/favicon_v2.png
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require      https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js
 // @updateURL    https://github.com/Coyote-31/User-Scripts_leagueofgraphs.com/blob/master/leagueofgraphs%20-%20color%20percent%20-%20runes.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
-/* globals jQuery, $, waitForKeyElements */
+/* globals jQuery, $, waitForKeyElements, isotope */
 'use strict';
 
 //// config (% and color) ////
@@ -61,6 +62,9 @@ let classStyle4MainRunes = [
     ".perk-9923-36"     // Hail of Blades
 ];
 
+// Global var for grid
+let $grid;
+
 waitForKeyElements("#runesColumn", main);
 
 function main () {
@@ -68,9 +72,43 @@ function main () {
     scriptCount++;
     console.log("Script Coyote Loaded #" + scriptCount);
 
+    // Delete ads
+    $(".ads").remove();
+
     // Globals
     let percentsPopGlobal = $("td.globalPopularityCell .progressBarTxt");
     let percentsVicGlobal = $("td.globalWinrateCell .progressBarTxt");
+
+    // Grid runes layout
+    $("#runesColumn > .box > .perksTableContainer").wrapAll("<div id='grid-container'></div>");
+
+    // Grid
+    $grid = $("#grid-container").isotope({
+        // options
+        itemSelector: '.perksTableContainer',
+        layoutMode: 'vertical',
+        transitionDuration: 300,
+    
+        // data
+        getSortData: {
+            popularity: function( itemElem ) {
+                // get text of .weight element
+                let pop = $( itemElem ).find('td.globalPopularityCell .progressBarTxt').text();
+                // replace parens (), and parse as float
+                return parseFloat( pop.replace( "%", "") );
+              },
+            winrate: function( itemElem ) {
+                // get text of .weight element
+                let vic = $( itemElem ).find('td.globalWinrateCell .progressBarTxt').text();
+                // replace parens (), and parse as float
+                return parseFloat( vic.replace( "%", "") );
+              },
+        },
+
+        // Sorting
+        sortBy: "popularity",
+        sortAscending: false
+    });
 
     colorPop(percentsPopGlobal);
     colorVic(percentsVicGlobal);
@@ -257,11 +295,6 @@ function style4MainRunes() {
 
 function addSortBtns() {
 
-    // Delete ads
-    $(".ads").remove();
-
-    // Add btns //
-
     let tables = $(".perksTableContainerTable");
 
     tables.each(function() {
@@ -278,34 +311,44 @@ function addSortBtns() {
             .on("click", sortPerksByPopularity)
                 .css(margin, marginValue)
                 .css(padding, paddingValue)
-                .css(background, backgroundValue);
+                .css(background, backgroundValue)
+                .addClass("btn-popularity")
+                .data("sort-order", "desc");
 
         $(th.get(2)).wrapInner("<button></button>").children("button").first()
             .on("click", sortPerksByVictory)
                 .css(margin, marginValue)
                 .css(padding, paddingValue)
-                .css(background, backgroundValue);
+                .css(background, backgroundValue)
+                .addClass("btn-winrate")
+                .data("sort-order", "none");
     });
 }
 
 function sortPerksByPopularity() {
 
-    // Sort perks
-    let perksArray = $(".perksTableContainer").toArray().sort(function(a,b) {
-        let aPercent = $(a).find("td.globalPopularityCell .progressBarTxt").html().replace('%', '');
-        let bPercent = $(b).find("td.globalPopularityCell .progressBarTxt").html().replace('%', '');
-        return bPercent - aPercent;
-    })
-    $(perksArray).appendTo($(".perksTableContainer").parent());
+    let prevSortOrder = $(this).data('sort-order');
+    let sortOrder = (prevSortOrder === "desc" ? "asc" : "desc");
+
+    $(".btn-popularity").data("sort-order", sortOrder);
+    $(".btn-winrate").data("sort-order", "none");
+
+    $grid.isotope({ 
+        sortBy: "popularity",
+        sortAscending: (sortOrder === "asc") 
+    });
 }
 
 function sortPerksByVictory() {
 
-    // Sort perks
-    let perksArray = $(".perksTableContainer").toArray().sort(function(a,b) {
-        let aPercent = $(a).find("td.globalWinrateCell .progressBarTxt").html().replace('%', '');
-        let bPercent = $(b).find("td.globalWinrateCell .progressBarTxt").html().replace('%', '');
-        return bPercent - aPercent;
-    })
-    $(perksArray).appendTo($(".perksTableContainer").parent());
+    let prevSortOrder = $(this).data('sort-order');
+    let sortOrder = (prevSortOrder === "desc" ? "asc" : "desc");
+
+    $(".btn-popularity").data("sort-order", "none");
+    $(".btn-winrate").data("sort-order", sortOrder);
+
+    $grid.isotope({ 
+        sortBy: "winrate",
+        sortAscending: (sortOrder === "asc") 
+    });
 }
