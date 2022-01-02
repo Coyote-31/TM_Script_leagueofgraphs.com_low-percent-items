@@ -194,7 +194,7 @@ function colorPopup (runeImgs) {
     
             // Popularity
             let popNumPercent = numbers[0].replace("<highlight>", "").replace("</highlight>", "");
-            let popNum = popNumPercent.replace("%", '');
+            let popNum = popNumPercent.replace(/%/g, '');
 
             if (0.0 <= popNum && popNum < lowPopLimit) {
                 runeImg.setAttribute("tooltip", tooltip.replace(popNumPercent, "<span style=\"color:" + lowPopColor + " !important;\">" + popNumPercent + "</span>"));
@@ -211,7 +211,7 @@ function colorPopup (runeImgs) {
 
             // Victory
             let vicNumPercent = numbers[1].replace("<highlight>", "").replace("</highlight>", "");
-            let vicNum = vicNumPercent.replace("%", '');
+            let vicNum = vicNumPercent.replace(/%/g, '');
 
             let vicNumPercentReplaced = "";
             let isIdenticalNum = numbers[0] === numbers[1];
@@ -421,9 +421,11 @@ function addSortIndicators() {
 
     $boxTitle
         .html("")
-        .append('<div id="box_title_txt">' + boxTitleTxt + '</div>')
+        .append('<div id="box_title_txt"></div>')
         .append('<button id="popularity_sort_btn"><i class="fa fa-sort"></i></button>')
         .append('<button id="winrate_sort_btn"><i class="fa fa-sort"></i></button>');
+
+    $("#box_title_txt").text(boxTitleTxt);
 
     // Title
     $("#box_title_txt").css("width", $(".perksTableContainer tr > th.text-center").outerWidth());
