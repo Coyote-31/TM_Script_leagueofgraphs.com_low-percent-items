@@ -37,6 +37,17 @@ const mediumVicColor = "#dfa33e"; // gold - goldenrod
 
 const highVicColor = "#2DEB90"; // greenyellow - lawngreen - lightgreen
 
+// Sort colors
+const colorSortPopOn = highPopColor;
+const colorSortWinOn = highVicColor;
+const colorSortOff = "slategrey";
+
+// Sort background linear-gradient
+const bgSortPopUp = "-webkit-linear-gradient(" + colorSortPopOn + " 50%, " + colorSortOff + " 50%)";
+const bgSortPopDown = "-webkit-linear-gradient(" + colorSortOff + " 50%, " + colorSortPopOn + " 50%)";
+const bgSortWinUp = "-webkit-linear-gradient(" + colorSortWinOn + " 50%, " + colorSortOff + " 50%)";
+const bgSortWinDown = "-webkit-linear-gradient(" + colorSortOff + " 50%, " + colorSortWinOn + " 50%)";
+
 // Count script loads
 let scriptCount = 0;
 
@@ -125,6 +136,7 @@ function main () {
 
     // Order
     addSortBtns();
+    addSortIndicators();
 }
 
 function colorPop (percents) {
@@ -307,31 +319,58 @@ function addSortBtns() {
         let background = "background";
         let backgroundValue= "none";
 
-        $(th.get(1)).wrapInner("<button></button>").children("button").first()
-            .on("click", sortPerksByPopularity)
-                .css(margin, marginValue)
-                .css(padding, paddingValue)
-                .css(background, backgroundValue)
-                .addClass("btn-popularity")
-                .data("sort-order", "desc");
+        // Button Popularity //
 
-        $(th.get(2)).wrapInner("<button></button>").children("button").first()
-            .on("click", sortPerksByVictory)
-                .css(margin, marginValue)
-                .css(padding, paddingValue)
-                .css(background, backgroundValue)
-                .addClass("btn-winrate")
-                .data("sort-order", "none");
+        let $btnPop = $(th.get(1)).wrapInner("<button></button>").children("button").first()
+            
+        $btnPop
+            .on("click", sortPerksByPopularity)
+            .css(margin, marginValue)
+            .css(padding, paddingValue)
+            .css(background, backgroundValue)
+            .addClass("btn-popularity")
+            .data("sort-order", "desc");
+
+        // Button Winrate //
+
+        let $btnWin =  $(th.get(2)).wrapInner("<button></button>").children("button").first()
+
+        $btnWin
+            .on("click", sortPerksByWinrate)
+            .css(margin, marginValue)
+            .css(padding, paddingValue)
+            .css(background, backgroundValue)
+            .addClass("btn-winrate")
+            .data("sort-order", "none");
+
+        // Change french text
+        $btnWin.text($btnWin.text().replace("% victoire", "Victoire")) ;
+
     });
 }
 
 function sortPerksByPopularity() {
 
     let prevSortOrder = $(this).data('sort-order');
-    let sortOrder = (prevSortOrder === "desc" ? "asc" : "desc");
+    let isWasDesc = prevSortOrder === "desc"
+    let sortOrder = (isWasDesc ? "asc" : "desc");
+    let isAsc = (sortOrder === "asc");
 
+    // Pop //
     $(".btn-popularity").data("sort-order", sortOrder);
+    // color icon
+    $("#popularity_sort_btn")
+        .css("background", (isAsc ? bgSortPopUp : bgSortPopDown))
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent");
+
+    // Win //
     $(".btn-winrate").data("sort-order", "none");
+    // color icon
+    $("#winrate_sort_btn")
+        .css("background", colorSortOff)
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent");
 
     $grid.isotope({ 
         sortBy: "popularity",
@@ -339,16 +378,81 @@ function sortPerksByPopularity() {
     });
 }
 
-function sortPerksByVictory() {
+function sortPerksByWinrate() {
 
     let prevSortOrder = $(this).data('sort-order');
-    let sortOrder = (prevSortOrder === "desc" ? "asc" : "desc");
+    let isWasDesc = prevSortOrder === "desc"
+    let sortOrder = (isWasDesc ? "asc" : "desc");
+    let isAsc = (sortOrder === "asc");
 
+    // Pop //
     $(".btn-popularity").data("sort-order", "none");
+    // color icon
+    $("#popularity_sort_btn")
+        .css("background", colorSortOff)
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent");
+
+    
+    // Win //
     $(".btn-winrate").data("sort-order", sortOrder);
+    // color icon
+    $("#winrate_sort_btn")
+        .css("background", (isAsc ? bgSortWinUp : bgSortWinDown))
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent");
+
 
     $grid.isotope({ 
         sortBy: "winrate",
         sortAscending: (sortOrder === "asc") 
     });
+}
+
+function addSortIndicators() {
+
+    // create icons
+    let $boxTitle = $("#runesColumn h3.box-title");
+
+    let boxTitleTxt = $boxTitle.text();
+
+    $boxTitle
+        .css("display", "flex");
+
+    $boxTitle
+        .html("")
+        .append('<div id="box_title_txt">' + boxTitleTxt + '</div>')
+        .append('<button id="popularity_sort_btn"><i class="fa fa-sort"></i></button>')
+        .append('<button id="winrate_sort_btn"><i class="fa fa-sort"></i></button>');
+
+    // Title
+    $("#box_title_txt").css("width", $(".perksTableContainer tr > th.text-center").outerWidth());
+
+    // Popularity
+    $("#popularity_sort_btn")
+        .addClass("btn-popularity")
+        .css("margin", 0)
+        .css("padding", 0)
+        // color icon
+        .css("background", bgSortPopDown)
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent")
+
+        .css("width", $(".perksTableContainer tr > th.text-center").eq(1).outerWidth())
+        .data("sort-order", "desc")
+        .on("click", sortPerksByPopularity);
+
+    // Winrate
+    $("#winrate_sort_btn")
+        .addClass("btn-winrate")
+        .css("margin", 0)
+        .css("padding", 0)
+        // color icon
+        .css("background", colorSortOff)
+        .css("-webkit-background-clip", "text")
+        .css("-webkit-text-fill-color", "transparent")
+
+        .css("width", $(".perksTableContainer tr > th.text-center").eq(2).outerWidth())
+        .data("sort-order", "none")
+        .on("click", sortPerksByWinrate);
 }
